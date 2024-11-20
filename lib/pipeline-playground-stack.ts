@@ -1,14 +1,15 @@
 import * as cdk from 'aws-cdk-lib';
-import { CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
+import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { PipelineStage } from './PipelineStage';
+import { ApiStack } from './ApiStack';
+import { Portal_API } from './Portal_Api';
 
 export class PipelinePlaygroundStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const pipeline = new CodePipeline(this, 'PracticePipeline', {
-      pipelineName: 'PracticePipeline',
+      pipelineName: 'Portal_API_Pipeline',
       synth: new ShellStep('Synth', {
         input : CodePipelineSource.gitHub('aguillen-SCC/Pipeline-Playground', 'main'),
         commands: [
@@ -21,15 +22,13 @@ export class PipelinePlaygroundStack extends cdk.Stack {
       })
     })
 
-    const testStage = pipeline.addStage(new PipelineStage(this, 'PipelineTestStage', {
-      stageName: 'test'
-    }));
-
-    testStage.addPre(new CodeBuildStep('unit-tests', {
-      commands: [
-        'npm ci',
-        'npm test'
-      ]
-    }))
+    pipeline.addStage(
+      new Portal_API(this, 'Dev', {
+      env: {
+        account: '234977570647',
+        region: 'us-east-1',
+      },
+    })
+  )
   }
 }
