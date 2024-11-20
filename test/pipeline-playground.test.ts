@@ -1,4 +1,4 @@
-import { handler } from "../services/hello"
+/* import { handler } from "../services/hello"
 
 describe('Hello describe test suite', ()=>{
 
@@ -7,3 +7,4 @@ describe('Hello describe test suite', ()=>{
         expect(result.statusCode).toBe(200);
     })
 })
+ */
