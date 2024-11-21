@@ -5,14 +5,11 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
 
-interface LamdaStackProps extends StackProps {
-    stageName?: string
-}
 export class LamdaStack extends Stack {
 
     public readonly helloLambdaIntegration: LambdaIntegration
 
-    constructor(scope: Construct, id: string, props?: LamdaStackProps) {
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props)
 
         const helloLambda = new NodejsFunction(this, 'hello-lambda', {
